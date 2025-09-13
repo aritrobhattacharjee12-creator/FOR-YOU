@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Romantic Quiz 💖</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+        text-align: center;
+        padding: 50px;
+        overflow-x: hidden;
+        position: relative;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+        display: inline-block;
+        animation: fadeIn 0.6s ease forwards;
+        max-width: 400px;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* Typing effect for intro */
+      h1 {
+        color: #e60073;
+        overflow: hidden;
+        white-space: nowrap;
+        border-right: 3px solid #e60073;
+        width: 0;
+        margin: auto;
+        font-size: 26px;
+        animation: typing 0.8s steps(30, end) forwards, blink 0.7s infinite;
+        text-shadow: 0 0 6px #ff4da6, 0 0 10px #ff80bf;
+      }
+      @keyframes typing {
+        from {
+          width: 0;
+        }
+        to {
+          width: 100%;
+        }
+      }
+      @keyframes blink {
+        50% {
+          border-color: transparent;
+        }
+      }
+
+      p {
+        font-size: 18px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        color: #444;
+        opacity: 0;
+        animation: fadeRotate 0.8s ease forwards;
+        animation-delay: 0.8s;
+      }
+      @keyframes fadeRotate {
+        from {
+          opacity: 0;
+          transform: rotateX(-70deg);
+        }
+        to {
+          opacity: 1;
+          transform: rotateX(0);
+        }
+      }
+
+      .option {
+        display: block;
+        background: #ff66a3;
+        color: white;
+        padding: 12px;
+        margin: 20px auto 0;
+        border-radius: 12px;
+        cursor: pointer;
+        width: 80%;
+        font-size: 17px;
+        animation: pulse 0.8s infinite;
+        transition: transform 0.3s, background 0.3s;
+        text-decoration: none;
+      }
+      .option:hover {
+        background: #cc0066;
+        transform: scale(1.05);
+      }
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 6px #ff99cc;
+        }
+        50% {
+          transform: scale(1.05);
+          box-shadow: 0 0 12px #ff4da6;
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 6px #ff99cc;
+        }
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Intro Screen -->
+    <div class="container" id="intro">
+      <h1 style="animation: none; border: none; width: auto; text-shadow: none">
+        Aj Mood Romantic Hoye Ache 💖
+      </h1>
+      <p>Tai Eta Tor Jonno Korlam 🥰</p>
+      <button onclick="goWelcome()" class="option">Cholo Suru Kori</button>
+    </div>
+
+    <!-- Welcome Screen -->
+    <div class="container" id="quiz" style="display: none">
+      <h1>Welcome My Love 💞</h1>
+      <p>Ki Re Ready Too 😘</p>
+      <button onclick="startQuiz()" class="option">Start Now</button>
+    </div>
+
+    <script>
+      // Intro -> Welcome
+      function goWelcome() {
+        document.getElementById("intro").style.display = "none";
+        document.getElementById("quiz").style.display = "inline-block";
+      }
+
+      // Quiz questions
+      const questions = [
+        {
+          q: "Amra Koto Tarikh Relation e Esechi?",
+          options: ["5 May", "8 May", "10 May", "7 May"],
+          correct: "8 May",
+        },
+        {
+          q: "Amra Prothom Jogra Kobe Korechilam?",
+          options: ["1 April", "2 April", "3 April", "4 April"],
+          correct: "3 April",
+        },
+        {
+          q: "Tui Amake Kobe Pothom Tor Phone Number Diyechilis?",
+          options: ["12 April", "14 April", "13 April", "15 April"],
+          correct: "13 April",
+        },
+        {
+          q: "Ami Jedin Pothom Tor Hat Dhorechilam Setar Ki Karon Chilo?",
+          options: [
+            "Tor haat ta chhilo thanda",
+            "Rasta Par Hobar Jonno",
+            "Moja Lagchilo Tai",
+            "Borsha chhilo tai",
+          ],
+          correct: "Rasta Par Hobar Jonno",
+        },
+        {
+          q: "Amar Fav Colour Ki?",
+          options: ["Black", "Blue", "Red", "Pink"],
+          correct: "Black",
+        },
+      ];
+
+      let currentQuestion = 0;
+      function startQuiz() {
+        showQuestion();
+      }
+
+      function showQuestion() {
+        const q = questions[currentQuestion];
+        const container = document.getElementById("quiz");
+        container.innerHTML = `
+        <div class="question-container" style="animation: fadeIn 0.6s ease;">
+          <h1 style="border:none;text-shadow:none;">Question ${
+            currentQuestion + 1
+          }</h1>
+          <p>${q.q}</p>
+          <div class="options">
+            ${q.options
+              .map(
+                (opt) =>
+                  `<div class="option" onclick="checkAnswer('${opt}')">${opt}</div>`
+              )
+              .join("")}
+          </div>
+          <div class="message" id="message"></div>
+        </div>
+      `;
+      }
+
+      function checkAnswer(answer) {
+        const q = questions[currentQuestion];
+        const message = document.getElementById("message");
+        if (answer === q.correct) {
+          message.innerHTML = "💖 Mone Ache Dekhchi😘";
+          setTimeout(() => {
+            currentQuestion++;
+            if (currentQuestion < questions.length) showQuestion();
+            else endQuiz();
+          }, 700);
+        } else {
+          message.innerHTML = "😢 Jantam Ami Vule Jabi Vebe Kor Abar";
+        }
+      }
+
+      function endQuiz() {
+        document.getElementById("quiz").innerHTML = `
+        <h1 style="border:none;text-shadow:none;"> I LOVE YOU 😘❤️ </h1>
+        <p class="final">Pujo Asche Aksonge berobo 🥰</p>
+        <p style="margin-top:20px;color:#e60073;font-weight:bold;">
+         tor jonno banalam, ami ata kemon laglo bol WhatsApp e Ai Khane link e Click Kor💕
+        </p>
+        <a href="https://wa.me/919883564047?text=Ami%20Tor%20Quiz%20Complete%20Korlam!%20Amar%20Khub%20valo%20legeche%20😘%20💖%20I%20LOVE%20YOU%20Thanks%20Ato%20sundor%20Banabar%20Jonno%20😘" 
+   target="_blank" class="option">
+  📩 WhatsApp e Bolbo
+</a>
+
+      `;
+      }
+    </script>
+  </body>
+</html>
